@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "420653892143",
+    "firebase_url": "https://homesafe-cd8cd.firebaseio.com",
+    "project_id": "homesafe-cd8cd",
+    "storage_bucket": "homesafe-cd8cd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420653892143:android:95b971680efadf39733cda",
+        "android_client_info": {
+          "package_name": "com.lloydaf.homesafe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420653892143-7dm3vc0olr0c6ac125sbrfa5f4ik0lc1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAWtgHcaiCXQsRbt1xL70Cs6J2H0wZqbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420653892143-7dm3vc0olr0c6ac125sbrfa5f4ik0lc1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
