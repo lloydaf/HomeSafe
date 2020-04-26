@@ -2,12 +2,12 @@ import { TextInput, Button, AsyncStorage } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
-import { GET_USER, REGISTER_USER } from '../../graphql/users'
-import { User } from '../../models/users';
-import { useLazyQueryAsync } from '../../wrappers';
+import { GET_USER, REGISTER_USER } from 'graphql-schema/users';
+import { User } from 'models/users';
+import { useLazyQueryAsync } from 'wrappers';
 import { useMutation } from '@apollo/client';
-import { Config } from '../../utils/expo/config.util';
-import { UserContext } from '../../stores/users';
+import { Config } from 'utils/expo/config.util';
+import { UserContext } from 'stores/users';
 
 const username$: Subject<string> = new Subject();
 

@@ -1,16 +1,15 @@
 import React from 'react';
-import { handleNotification, getExpoToken, sendPushNotification } from './utils/expo/expo.util';
+import { handleNotification, getExpoToken, sendPushNotification } from 'utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
-import { Config } from './utils/expo/config.util';
-import { Login } from './routes/login/Login';
+import { Config } from 'utils/expo/config.util';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { Container, Header, Left, Body, Title, Right } from 'native-base';
-import { Home } from './routes/home/Home';
+import { Home, Login } from 'routes';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
-import { UserContext, UserContextType } from './stores/users';
+import { UserContext, UserContextType } from 'stores/users';
 import { EventSubscription } from 'fbemitter';
 
 const client = new ApolloClient({
