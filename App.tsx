@@ -1,5 +1,4 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
 import { handleNotification, getExpoToken, sendPushNotification } from './utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
@@ -12,6 +11,7 @@ import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { UserContext, UserContextType } from './stores/users';
+import { EventSubscription } from 'fbemitter';
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -22,7 +22,7 @@ const client = new ApolloClient({
 
 export default class App extends React.Component {
 
-  _notificationSubscription;
+  _notificationSubscription: EventSubscription;
   state = {
     loading: true,
     loggedIn: false
@@ -100,13 +100,4 @@ export default class App extends React.Component {
       </ApolloProvider>
     );
   }
-
-  styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
 }
