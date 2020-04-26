@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
 import { GET_USER, REGISTER_USER } from '../../graphql/users'
-import { User } from '../../models';
+import { User } from '../../models/users';
 import { useLazyQueryAsync } from '../../wrappers';
 import { useMutation } from '@apollo/client';
 import { Config } from '../../utils/expo/config.util';
