@@ -6,6 +6,15 @@
     "moduleResolution": "node",
     "noEmit": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "models/*": ["./models/*"],
+      "graphql-schema/*": ["./graphql/*"],
+      "routes/*": ["./routes/*"],
+      "stores/*": ["./stores/*"],
+      "wrappers/*": ["./wrappers/*"],
+      "utils/*": ["./utils/*"]
+    }
   }
 }

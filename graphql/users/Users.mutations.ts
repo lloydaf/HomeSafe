@@ -1,5 +1,5 @@
-import { gql } from "@apollo/client";
-import { User } from "../../models/users";
+import { gql } from '@apollo/client';
+import { User } from 'models/users';
 
 type UserRegistration = {
   username: string;

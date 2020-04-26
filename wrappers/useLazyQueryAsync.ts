@@ -1,4 +1,4 @@
-import { useApolloClient, OperationVariables, DocumentNode } from "@apollo/client";
+import { useApolloClient, OperationVariables, DocumentNode } from '@apollo/client';
 import React from 'react';
 
 export function useLazyQueryAsync<TData = any, TVariables = OperationVariables>(query: DocumentNode) {
