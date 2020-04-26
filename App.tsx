@@ -1,22 +1,50 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { NotifyList } from './components/notify-list/NotifyList';
 import { handleNotification, getExpoToken, sendPushNotification } from './utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Config } from './utils/expo/config.util';
+import { Login } from './routes/login/Login';
+import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { Container, Header, Left, Body, Title, Right } from 'native-base';
+import { Home } from './routes/home/Home';
+import * as Font from 'expo-font';
+import { Ionicons } from '@expo/vector-icons';
+import { AppLoading } from 'expo';
+import { UserContext, UserContextType } from './stores/users';
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: new HttpLink({
+    uri: 'http://192.168.1.4:3000/dev/api',
+  })
+});
 
 export default class App extends React.Component {
 
   _notificationSubscription;
   state = {
-    loading: false,
-    showLogin: false
+    loading: true,
+    loggedIn: false
+  }
+
+  userContext: UserContextType = {
+    logout: () => this.setState({ loggedIn: false }),
+    login: () => this.setState({ loggedIn: true })
+  };
+
+  async componentDidUpdate() {
+
   }
 
   async componentDidMount() {
 
     try {
+      await Font.loadAsync({
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      });
       const [[_, expoToken], [__, userName]] = await AsyncStorage.multiGet([Config.ExpoToken, Config.UserName]);
       console.log(expoToken, userName);
       if (!expoToken) {
@@ -24,9 +52,8 @@ export default class App extends React.Component {
         console.log('token is', token);
         await AsyncStorage.setItem(Config.ExpoToken, token);
       }
-      if (!userName) {
-        const showLogin = true;
-        this.setState({ showLogin });
+      if (userName) {
+        this.setState({ loggedIn: true });
       }
       const loading = false;
       this.setState({ loading })
@@ -46,37 +73,31 @@ export default class App extends React.Component {
 
 
   render() {
-
+    let view;
+    if (this.state.loading) {
+      return <AppLoading />;
+    }
+    else if (!this.state.loggedIn) {
+      view = <Login />;
+    }
+    else {
+      view = <Home />
+    }
     return (
-      <View style={this.styles.container}>
-        {
-          !!this.state.loading && (
-            <Text>Loading</Text>
-          )
-        }
-        {
-          !this.state.loading && !this.state.showLogin && (
-            <NotifyList data={[
-              { key: 'Devin' },
-              { key: 'Dan' },
-              { key: 'Dominic' },
-              { key: 'Jackson' },
-              { key: 'James' },
-              { key: 'Joel' },
-              { key: 'John' },
-              { key: 'Jillian' },
-              { key: 'Jimmy' },
-              { key: 'Julie' },
-            ]} onPress={sendPushNotification}>
-            </NotifyList>
-          )
-        }
-        {
-          !this.state.loading && this.state.showLogin && (
-            <Text>Login</Text>
-          )
-        }
-      </View>
+      <ApolloProvider client={client}>
+        <UserContext.Provider value={this.userContext}>
+          <Container>
+            <Header hasTabs>
+              <Left />
+              <Body>
+                <Title>HomeSafe</Title>
+              </Body>
+              <Right />
+            </Header>
+            {view}
+          </Container>
+        </UserContext.Provider>
+      </ApolloProvider>
     );
   }
 

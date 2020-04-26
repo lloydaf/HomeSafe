@@ -1,14 +1,17 @@
-import { TextInput, Button } from "react-native";
-import React, { useState, useEffect } from "react";
+import { TextInput, Button, AsyncStorage } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { Subject } from 'rxjs';
 import { debounceTime, filter, tap } from 'rxjs/operators';
-import { GET_USER } from "../../graphql/users/users.queries";
-import { User } from '../../models/User.type';
-import { useLazyQueryAsync } from "../../wrappers/useLazyQueryAsync";
+import { GET_USER, REGISTER_USER } from '../../graphql/users'
+import { User } from '../../models';
+import { useLazyQueryAsync } from '../../wrappers';
+import { useMutation } from '@apollo/client';
+import { Config } from '../../utils/expo/config.util';
+import { UserContext } from '../../stores/users';
 
-let username$: Subject<string> = new Subject();
+const username$: Subject<string> = new Subject();
 
-export const Login = (props: { loginCallback: (_: { username: string; phoneNumber: string; fullName: string; }) => void; }) => {
+export const Login = () => {
 
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -19,9 +22,25 @@ export const Login = (props: { loginCallback: (_: { username: string; phoneNumbe
     username$.next(username);
   }
 
+  const [registerUser, { data, error }] = useMutation(REGISTER_USER.mutation)
+
+  const registerAndNavigate = async (callback) => {
+    try {
+      await Promise.all([
+        registerUser({
+          variables: REGISTER_USER.variables({ username, fullName, phoneNumber })
+        }),
+        AsyncStorage.setItem(Config.UserName, username)
+      ]);
+      callback();
+    } catch (error) {
+      console.log('error', error);
+    }
+  }
+
   const getUser = useLazyQueryAsync(GET_USER.query);
-  
-  !username$.observers.length && username$.pipe(
+
+  const subscription = username$.observers && !username$.observers.length && username$.pipe(
     debounceTime(1000),
     tap(setUsername),
     filter(Boolean)
@@ -40,17 +59,24 @@ export const Login = (props: { loginCallback: (_: { username: string; phoneNumbe
 
   useEffect(() => {
     return () => {
-      username$.unsubscribe();
+      console.log('going to unsubscribe');
+      subscription.unsubscribe();
     }
   }, []);
 
 
   return (
-    <>
-      <TextInput placeholder={'Full Name'} defaultValue={fullName} onChangeText={setFullName}></TextInput>
-      <TextInput placeholder={'Username'} defaultValue={username} onChangeText={fetchUser}></TextInput>
-      <TextInput placeholder={'Phone Number'} defaultValue={phoneNumber} onChangeText={setPhoneNumber}></TextInput>
-      <Button title='Submit' disabled={disabled} onPress={() => props.loginCallback({ username, phoneNumber, fullName })}></Button>
-    </>
+    <UserContext.Consumer>
+      {
+        ({ login }: any) => (
+          <>
+            <TextInput placeholder={'Full Name'} defaultValue={fullName} onChangeText={setFullName}></TextInput>
+            <TextInput placeholder={'Username'} defaultValue={username} onChangeText={fetchUser}></TextInput>
+            <TextInput placeholder={'Phone Number'} defaultValue={phoneNumber} onChangeText={setPhoneNumber}></TextInput>
+            <Button title='Submit' disabled={!username || !fullName || !phoneNumber || disabled} onPress={() => registerAndNavigate(login)}></Button>
+          </>
+        )
+      }
+    </UserContext.Consumer>
   );
 }
