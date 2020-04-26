@@ -1,7 +1,7 @@
 import { Text } from 'react-native'
 import { Tab, Tabs } from 'native-base';
 import React from 'react';
-import { Settings } from '../settings/Settings';
+import { Settings } from 'routes/settings/Settings';
 
 export const Home = (props) => {
   return (
