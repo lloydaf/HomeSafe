@@ -1,5 +1,5 @@
 import React from 'react';
-import { handleNotification, getExpoToken, sendPushNotification } from 'utils/expo/expo.util';
+import { handleNotification } from 'utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Config } from 'utils/expo/config.util';
@@ -32,10 +32,6 @@ export default class App extends React.Component {
     login: () => this.setState({ loggedIn: true })
   };
 
-  async componentDidUpdate() {
-
-  }
-
   async componentDidMount() {
 
     try {
@@ -44,13 +40,8 @@ export default class App extends React.Component {
         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
         ...Ionicons.font,
       });
-      const [[_, expoToken], [__, userName]] = await AsyncStorage.multiGet([Config.ExpoToken, Config.UserName]);
-      console.log(expoToken, userName);
-      if (!expoToken) {
-        const token = await getExpoToken();
-        console.log('token is', token);
-        await AsyncStorage.setItem(Config.ExpoToken, token);
-      }
+      const userName = await AsyncStorage.getItem(Config.UserName);
+      console.log(userName);
       if (userName) {
         this.setState({ loggedIn: true });
       }

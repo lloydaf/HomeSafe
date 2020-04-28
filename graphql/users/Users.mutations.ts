@@ -17,3 +17,15 @@ export const REGISTER_USER = {
   `,
   variables: ({ username, phoneNumber, fullName }: User): { user: UserRegistration } => ({ user: { username, phoneNumber, fullName } })
 }
+
+export const SET_TOKEN = {
+  mutation: gql`
+    mutation setToken($input: TokenRegistration) {
+      setToken(input: $input){
+        fullName
+        expoToken
+      }
+    }
+  `,
+  variables: ({ username, expoToken }) => ({ input: { username, expoToken } })
+}

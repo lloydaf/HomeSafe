@@ -1,7 +1,8 @@
 import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
-import { Platform, Vibration } from 'react-native';
+import { Platform, Vibration, AsyncStorage } from 'react-native';
+import { Config } from './config.util';
 
 export const handleNotification = (_: any) => {
   Vibration.vibrate(0);
@@ -55,3 +56,17 @@ export const getExpoToken = async (): Promise<string> => {
   }
   return token;
 };
+
+export const getToken = async () => {
+  try {
+    const expoToken = await AsyncStorage.getItem(Config.ExpoToken);
+    if (!expoToken) throw new Error(`${Config.ExpoToken} not set, fetching!`);
+    console.log(`${Config.ExpoToken} set, ${expoToken}`);
+    return expoToken;
+  } catch (err) {
+    const token = await getExpoToken();
+    console.log(`${Config.ExpoToken} fetched, ${token}`);
+    await AsyncStorage.setItem(Config.ExpoToken, token);
+    return token;
+  }
+}
