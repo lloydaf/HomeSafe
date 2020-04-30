@@ -1,7 +1,7 @@
 import { TextInput, Button, AsyncStorage } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { REGISTER_USER, SET_TOKEN } from 'graphql-schema/users';
-import { User } from 'models/users';
+import { User, ReactiveStore } from 'models';
 import { useMutation } from '@apollo/client';
 import { Config } from 'utils/expo/config.util';
 import { UserContext, UserContextType, useUsername } from 'stores/users';
@@ -14,7 +14,10 @@ export const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullName, setFullName] = useState('');
 
-  const [user$, username$] = useUsername();
+  const {
+    subscribeTo$: user$,
+    emitFrom$: username$
+  }: ReactiveStore<User, string> = useUsername();
 
   const fetchUser = (name: string) => {
     username = name;
@@ -22,7 +25,7 @@ export const Login = () => {
   }
 
   const userSubscription$ = user$.subscribe((user: User) => {
-    user.username ? setDisabled(true): setDisabled(false);
+    user.username ? setDisabled(true) : setDisabled(false);
   });
 
   useEffect(() => {

@@ -4,28 +4,32 @@ import React, { useState, useEffect } from 'react';
 import { Settings } from 'routes/settings/Settings';
 import { sendPushNotification } from 'utils/expo/expo.util';
 import { useUsername } from 'stores/users';
-import { User } from 'models/users';
+import { User } from 'models';
 
 export const Home = () => {
 
   const [message, setMessage] = useState('');
   const [expoToken, setExpoToken] = useState('');
   const [disabled, setDisabled] = useState(true);
-  const [user$, username$] = useUsername();
+  const {
+    subscribeTo$: user$,
+    emitFrom$: username$
+  } = useUsername();
 
   const fetchUser = (username: string) => {
-    setDisabled(true);
     username$.next(username);
   }
 
+  const subscription = user$.subscribe((user: User) => {
+    if (user.expoToken) {
+      setExpoToken(user.expoToken);
+      setDisabled(false);
+    }
+    else {
+      setDisabled(true);
+    }
+  })
   useEffect(() => {
-    const subscription = user$.subscribe((user: User) => {
-      console.log('user', user);
-      if (user.expoToken) {
-        setExpoToken(user.expoToken);
-        setDisabled(false);
-      }
-    })
     return () => {
       subscription && subscription.unsubscribe();
     }
@@ -46,7 +50,7 @@ export const Home = () => {
       <Tab heading="Home">
         <TextInput placeholder="username" onChangeText={fetchUser}></TextInput>
         <TextInput placeholder="message" defaultValue={message} onChangeText={setMessage}></TextInput>
-        <Button disabled={disabled} onPress={() => sendMessage({ expoToken, body: message })}>
+        <Button disabled={disabled || !message} onPress={() => sendMessage({ expoToken, body: message })}>
           <Text>Send Me!</Text>
         </Button>
       </Tab>
