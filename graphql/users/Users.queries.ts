@@ -5,6 +5,7 @@ export const GET_USER = {
     query getUser($username: String!){
       user(username: $username) {
         username
+        expoToken
       }
     }`,
   variables: (username: string) => ({ username })
