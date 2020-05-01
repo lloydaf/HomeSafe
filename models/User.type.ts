@@ -3,4 +3,5 @@ export type User = {
   fullName?: string;
   expoToken?: string;
   phoneNumber?: string;
+  password?: string;
 }
