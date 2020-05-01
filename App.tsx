@@ -4,18 +4,23 @@ import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Config } from 'utils/expo/config.util';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { Container, Header, Left, Body, Title, Right } from 'native-base';
+import { Container } from 'native-base';
 import { Home, Login } from 'routes';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
 import { AppLoading } from 'expo';
 import { UserContext, UserContextType } from 'stores/users';
 import { EventSubscription } from 'fbemitter';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { SignUp } from 'routes/sign-up/SignUp';
+
+const Stack = createStackNavigator();
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: 'http://192.168.1.4:3000/dev/api',
+    uri: 'http://192.168.1.9:3000/dev/api',
   })
 });
 
@@ -41,7 +46,7 @@ export default class App extends React.Component {
         ...Ionicons.font,
       });
       const userName = await AsyncStorage.getItem(Config.UserName);
-      console.log(userName);
+      console.log('username is', userName);
       if (userName) {
         this.setState({ loggedIn: true });
       }
@@ -67,27 +72,25 @@ export default class App extends React.Component {
     if (this.state.loading) {
       return <AppLoading />;
     }
-    else if (!this.state.loggedIn) {
-      view = <Login />;
-    }
-    else {
-      view = <Home />
-    }
     return (
-      <ApolloProvider client={client}>
-        <UserContext.Provider value={this.userContext}>
-          <Container>
-            <Header hasTabs>
-              <Left />
-              <Body>
-                <Title>HomeSafe</Title>
-              </Body>
-              <Right />
-            </Header>
-            {view}
-          </Container>
-        </UserContext.Provider>
-      </ApolloProvider>
+      <NavigationContainer>
+        <ApolloProvider client={client}>
+          <UserContext.Provider value={this.userContext}>
+            <Container>
+              {!this.state.loggedIn ? (
+                <Stack.Navigator initialRouteName="Login">
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="SignUp" component={SignUp} />
+                </Stack.Navigator>
+              ) : (
+                  <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name={"Home"} component={Home} />
+                  </Stack.Navigator>
+                )}
+            </Container>
+          </UserContext.Provider>
+        </ApolloProvider>
+      </NavigationContainer>
     );
   }
 }
