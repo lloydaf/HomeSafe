@@ -35,20 +35,18 @@ export const SignUp = ({ navigation }) => {
     }
   });
 
-  const [action, { data: tokenData }] = useMutation(SET_TOKEN.mutation);
+  const [setToken] = useMutation(SET_TOKEN.mutation);
 
-  const [registerUser, { data: registrationData, error }] = useMutation(REGISTER_USER.mutation);
+  const [registerUser] = useMutation(REGISTER_USER.mutation);
 
   const registerAndNavigate = async ({ login }: UserContextType) => {
     try {
-      await Promise.all([
-        registerUser({
-          variables: REGISTER_USER.variables({ username, fullName, phoneNumber })
-        }),
-        AsyncStorage.setItem(Config.UserName, username),
-      ]);
+      const { data: registrationData } = await registerUser({
+        variables: REGISTER_USER.variables({ username, fullName, phoneNumber })
+      });
+      await AsyncStorage.setItem(Config.UserName, username);
       const expoToken = await getToken();
-      await action({
+      const { data: tokenData } = await setToken({
         variables: SET_TOKEN.variables({ username, expoToken })
       });
       login();

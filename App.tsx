@@ -3,7 +3,8 @@ import { handleNotification } from 'utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Config } from 'utils/expo/config.util';
-import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client';
+import { onError } from '@apollo/link-error'
 import { Container } from 'native-base';
 import { Home, Login } from 'routes';
 import * as Font from 'expo-font';
@@ -15,13 +16,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignUp } from 'routes/sign-up/SignUp';
 
+
 const Stack = createStackNavigator();
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+})
+
+const httpLink = new HttpLink({
+  uri: 'http://192.168.1.4:3000/dev/api'
+});
+
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: new HttpLink({
-    uri: 'http://192.168.1.9:3000/dev/api',
-  })
+  link: ApolloLink.from([errorLink, httpLink])
 });
 
 export default class App extends React.Component {
