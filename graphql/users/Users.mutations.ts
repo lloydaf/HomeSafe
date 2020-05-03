@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 import { User } from 'models';
-import { GraphQLWrapper } from 'graphql-schema/GraphQLWrapper.type';
+import { GraphQLMutation } from 'graphql-schema/GraphQLWrapper.type';
 
 type UserRegistration = {
   username: string;
@@ -9,7 +9,7 @@ type UserRegistration = {
   password: string;
 }
 
-export const REGISTER_USER: GraphQLWrapper = {
+export const REGISTER_USER: GraphQLMutation = {
   mutation: gql`
     mutation registerUser($user: UserRegistration!) {
       registerUser(user: $user) {
@@ -20,7 +20,7 @@ export const REGISTER_USER: GraphQLWrapper = {
   variables: ({ username, phoneNumber, fullName, password }: User): { user: UserRegistration } => ({ user: { username, phoneNumber, fullName, password } })
 }
 
-export const LOGIN_USER: GraphQLWrapper = {
+export const LOGIN_USER: GraphQLMutation = {
   mutation: gql`
     mutation login($input: UserLogin!){
       login(input: $input){
@@ -32,7 +32,7 @@ export const LOGIN_USER: GraphQLWrapper = {
   variables: ({ username, password }) => ({ input: { username, password } })
 }
 
-export const SET_TOKEN: GraphQLWrapper = {
+export const SET_TOKEN: GraphQLMutation = {
   mutation: gql`
     mutation setToken($input: TokenRegistration!) {
       setToken(input: $input){

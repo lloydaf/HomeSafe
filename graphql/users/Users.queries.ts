@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
-import { GraphQLWrapper } from 'graphql-schema/GraphQLWrapper.type';
+import { GraphQLQuery } from 'graphql-schema/GraphQLWrapper.type';
 
-export const GET_USER = {
+export const GET_USER: GraphQLQuery = {
   query: gql`
     query getUser($username: String!){
       user(username: $username) {
