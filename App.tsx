@@ -2,7 +2,7 @@ import React from 'react';
 import { handleNotification } from 'utils/expo/expo.util';
 import { Notifications } from 'expo';
 import { AsyncStorage } from 'react-native';
-import { Config } from 'utils/expo/config.util';
+import { Config } from 'utils/config/config.util';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/link-error'
 import { Container } from 'native-base';

@@ -1,7 +1,7 @@
 import * as exported from './index';
-import { isGraphQLMutation, isGraphQLQuery } from '../GraphQLWrapper.type';
+import { GraphQLMutation, GraphQLQuery } from 'graphql-schema/GraphQLWrapper.type';
 
-describe('index should export both queries and mutations', () => {
+describe('Tests for Users: Queries and Mutations', () => {
   describe('exported queries', () => {
     it('should export GET_USER', () => {
       const GET_USER = exported.GET_USER;
@@ -28,3 +28,13 @@ describe('index should export both queries and mutations', () => {
     })
   })
 })
+
+
+// Only for testing
+function isGraphQLMutation(obj: any): obj is GraphQLMutation {
+  return (obj.variables !== undefined && (obj.query !== undefined || obj.mutation !== undefined));
+}
+
+function isGraphQLQuery(obj: any): obj is GraphQLQuery {
+  return (obj.variables !== undefined && (obj.query !== undefined || obj.mutation !== undefined));
+}

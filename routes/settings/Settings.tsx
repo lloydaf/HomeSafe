@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, ListItem, Text } from 'native-base';
 import { AsyncStorage } from 'react-native';
-import { Config } from 'utils/expo/config.util';
+import { Config } from 'utils/config/config.util';
 import { UserContext, UserContextType } from 'stores/users';
 
 const signOut = async (callback: Function) => {

@@ -2,7 +2,7 @@ import { Notifications } from 'expo';
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 import { Platform, Vibration, AsyncStorage } from 'react-native';
-import { Config } from './config.util';
+import { Config } from '../config/config.util';
 
 export const handleNotification = (_: any) => {
   Vibration.vibrate(0);

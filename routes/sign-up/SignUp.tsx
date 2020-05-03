@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { REGISTER_USER, SET_TOKEN } from 'graphql-schema/users';
 import { User, ReactiveStore } from 'models';
 import { useMutation } from '@apollo/client';
-import { Config } from 'utils/expo/config.util';
+import { Config } from 'utils/config/config.util';
 import { UserContext, UserContextType, useUsername } from 'stores/users';
 import { getToken } from 'utils/expo/expo.util';
 

@@ -2,7 +2,7 @@ import { TextInput, Button, AsyncStorage } from 'react-native';
 import React, { useState } from 'react';
 import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users';
 import { useMutation } from '@apollo/client';
-import { Config } from 'utils/expo/config.util';
+import { Config } from 'utils/config/config.util';
 import { UserContext, UserContextType } from 'stores/users';
 import { getToken } from 'utils/expo/expo.util';
 
