@@ -2,10 +2,10 @@ import { DocumentNode } from "graphql";
 
 export type GraphQLMutation = {
   mutation: DocumentNode;
-  variables: Function;
+  variables: any;
 }
 
 export type GraphQLQuery = {
   query: DocumentNode;
-  variables: Function;
+  variables: any;
 }
