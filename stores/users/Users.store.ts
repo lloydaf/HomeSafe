@@ -9,7 +9,7 @@ import { ReactiveStore } from 'models';
 export const UserContext = React.createContext({});
 
 export interface UserContextType {
-  login?: () => void;
+  login?: ({ username }: { username: string }) => void;
   logout?: () => void;
 }
 
@@ -35,7 +35,7 @@ export const useUsername = (): ReactiveStore<User, string> => {
       console.log('error in useUsername', error.message);
     }
   }) || null;
-  
+
   useEffect(() => {
     return () => {
       subscription && subscription.unsubscribe();

@@ -1,8 +1,7 @@
-import { TextInput, Button, AsyncStorage } from 'react-native';
+import { TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users';
 import { useMutation } from '@apollo/client';
-import { Config } from 'utils/config/config.util';
 import { UserContext, UserContextType } from 'stores/users';
 import { getToken } from 'utils/expo/expo.util';
 
@@ -25,8 +24,7 @@ export const Login = ({ navigation }) => {
       const { data: tokenData } = await action({
         variables: SET_TOKEN.variables({ username, expoToken })
       });
-      await AsyncStorage.setItem(Config.UserName, username);
-      login();
+      login({ username });
     } catch (error) {
       console.log('error logging user in', error);
     }

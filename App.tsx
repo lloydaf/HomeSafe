@@ -49,7 +49,10 @@ export default class App extends React.Component {
 
   userContext: UserContextType = {
     logout: () => this.setState({ loggedIn: false }),
-    login: () => this.setState({ loggedIn: true })
+    login: async ({ username }) => {
+      await AsyncStorage.setItem(Config.UserName, username);
+      this.setState({ loggedIn: true })
+    }
   };
 
   async componentDidMount() {

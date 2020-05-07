@@ -44,12 +44,11 @@ export const SignUp = ({ navigation }) => {
       const { data: registrationData } = await registerUser({
         variables: REGISTER_USER.variables({ username, fullName, phoneNumber })
       });
-      await AsyncStorage.setItem(Config.UserName, username);
       const expoToken = await getToken();
       const { data: tokenData } = await setToken({
         variables: SET_TOKEN.variables({ username, expoToken })
       });
-      login();
+      login({ username });
     } catch (error) {
       console.log('error', error);
     }
