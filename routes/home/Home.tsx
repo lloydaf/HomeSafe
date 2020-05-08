@@ -21,7 +21,7 @@ export const Home = () => {
   }
 
   const subscription = user$.subscribe((user: User) => {
-    if (user.expoToken) {
+    if (user && user.expoToken) {
       setExpoToken(user.expoToken);
       setDisabled(false);
     }

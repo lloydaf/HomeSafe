@@ -17,7 +17,7 @@ export interface UserContextType {
 export const useUsername = (): ReactiveStore<User, string> => {
   const username$: Subject<string> = new Subject();
   const user$: Subject<User> = new Subject();
-
+  
   const getUser = useLazyQueryAsync(GET_USER.query);
 
   const subscription = username$.pipe(
