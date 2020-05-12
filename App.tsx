@@ -30,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const httpLink = new HttpLink({
-  uri: 'http://192.168.1.4:3000/dev/api'
+  uri: 'http://192.168.2.6:3000/dev/api'
 });
 
 

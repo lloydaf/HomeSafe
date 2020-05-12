@@ -6,9 +6,9 @@ import { useMutation } from '@apollo/client';
 import { Config } from 'utils/config/config.util';
 import { UserContext, UserContextType, useUsername } from 'stores/users';
 import { getToken } from 'utils/expo/expo.util';
-
+let username: string = null;
 export const SignUp = ({ navigation }) => {
-  let username: string = null;
+
   const [disabled, setDisabled] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullName, setFullName] = useState('');
@@ -42,7 +42,7 @@ export const SignUp = ({ navigation }) => {
   const registerAndNavigate = async ({ login }: UserContextType) => {
     try {
       const { data: registrationData } = await registerUser({
-        variables: REGISTER_USER.variables({ username, fullName, phoneNumber })
+        variables: REGISTER_USER.variables({ username, fullName, phoneNumber, password })
       });
       const expoToken = await getToken();
       const { data: tokenData } = await setToken({
