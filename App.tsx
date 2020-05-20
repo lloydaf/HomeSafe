@@ -5,7 +5,7 @@ import { AsyncStorage } from 'react-native';
 import { Config } from 'utils/config/config.util';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client';
 import { onError } from '@apollo/link-error'
-import { Container } from 'native-base';
+import { Container, Item } from 'native-base';
 import { Home, Login } from 'routes';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,10 +15,12 @@ import { EventSubscription } from 'fbemitter';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SignUp } from 'routes/sign-up/SignUp';
-
-
+import Constants from "expo-constants";
+import { AddNewGroup } from 'routes/add-new-group/AddNewGroup';
+import { GroupContext, GroupContextType } from 'stores/groups/Groups.store';
+const { manifest } = Constants;
+const uri = `http://${manifest.debuggerHost.split(':').shift()}`;
 const Stack = createStackNavigator();
-
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path }) =>
@@ -28,25 +30,20 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     );
   if (networkError) console.log(`[Network error]: ${networkError}`);
 })
-
 const httpLink = new HttpLink({
-  uri: 'http://192.168.2.6:3000/dev/api'
+  uri: `${uri}:3000/dev/api`
 });
-
-
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: ApolloLink.from([errorLink, httpLink])
 });
-
 export default class App extends React.Component {
-
   _notificationSubscription: EventSubscription;
   state = {
     loading: true,
-    loggedIn: false
+    loggedIn: false,
+    groups: []
   }
-
   userContext: UserContextType = {
     logout: () => this.setState({ loggedIn: false }),
     login: async ({ username }) => {
@@ -54,9 +51,17 @@ export default class App extends React.Component {
       this.setState({ loggedIn: true })
     }
   };
+  
+  deleteGroupName = (groupName: string) => {
+    const groups = this.state.groups.filter((item)=> item.name !== groupName);
+    this.setState({groups: groups});
+  }
 
+  createNewGroup = (group: any) => {
+    const groups = [...this.state.groups, group];
+    this.setState({groups: groups})
+  }
   async componentDidMount() {
-
     try {
       await Font.loadAsync({
         Roboto: require('native-base/Fonts/Roboto.ttf'),
@@ -73,9 +78,7 @@ export default class App extends React.Component {
     } catch (err) {
       console.log('error is', err);
     } finally {
-
     }
-
     // Handle notifications that are received or selected while the app
     // is open. If the app was closed and then opened by tapping the
     // notification (rather than just tapping the app icon to open it),
@@ -83,8 +86,6 @@ export default class App extends React.Component {
     // with the notification data.
     this._notificationSubscription = Notifications.addListener(handleNotification);
   }
-
-
   render() {
     let view;
     if (this.state.loading) {
@@ -101,9 +102,12 @@ export default class App extends React.Component {
                   <Stack.Screen name="SignUp" component={SignUp} />
                 </Stack.Navigator>
               ) : (
-                  <Stack.Navigator initialRouteName="Home">
-                    <Stack.Screen name={"Home"} component={Home} />
-                  </Stack.Navigator>
+                  <GroupContext.Provider value={{groups: this.state.groups, createNewGroup: this.createNewGroup, deleteGroupName: this.deleteGroupName}}>
+                    <Stack.Navigator initialRouteName="Home">
+                      <Stack.Screen name="Home" component={Home} />
+                      <Stack.Screen name="AddNewGroup" component={AddNewGroup} />
+                    </Stack.Navigator>
+                  </GroupContext.Provider>
                 )}
             </Container>
           </UserContext.Provider>

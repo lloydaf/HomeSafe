@@ -13,7 +13,6 @@ export const Login = ({ navigation }) => {
   const [tryLogin] = useMutation(LOGIN_USER.mutation);
   const [action] = useMutation(SET_TOKEN.mutation);
 
-
   const loginUser = async ({ login }: UserContextType) => {
     try {
       const { data: loginData } = await tryLogin({
@@ -25,6 +24,8 @@ export const Login = ({ navigation }) => {
         variables: SET_TOKEN.variables({ username, expoToken })
       });
       login({ username });
+  
+
     } catch (error) {
       console.log('error logging user in', error);
     }

@@ -5,8 +5,10 @@ import { Settings } from 'routes/settings/Settings';
 import { sendPushNotification } from 'utils/expo/expo.util';
 import { useUsername } from 'stores/users';
 import { User } from 'models';
+import {Main} from 'routes/main/Main'
 
-export const Home = () => {
+import { AddNewGroup } from 'routes/add-new-group/AddNewGroup';
+export const Home = ({navigation}) => {
 
   const [message, setMessage] = useState('');
   const [expoToken, setExpoToken] = useState('');
@@ -48,15 +50,12 @@ export const Home = () => {
   return (
     <Tabs>
       <Tab heading="Home">
-        <TextInput placeholder="username" onChangeText={fetchUser}></TextInput>
-        <TextInput placeholder="message" defaultValue={message} onChangeText={setMessage}></TextInput>
-        <Button disabled={disabled || !message} onPress={() => sendMessage({ expoToken, body: message })}>
-          <Text>Send Me!</Text>
-        </Button>
+        <Main navigation={navigation}/>
       </Tab>
       <Tab heading="Settings">
         <Settings />
       </Tab>
     </Tabs>
+
   )
 }

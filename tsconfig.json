@@ -14,7 +14,8 @@
       "routes/*": ["./routes/*"],
       "stores/*": ["./stores/*"],
       "wrappers/*": ["./wrappers/*"],
-      "utils/*": ["./utils/*"]
+      "utils/*": ["./utils/*"],
+      "components/*": ["./components/*"]
     }
   }
 }

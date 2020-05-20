@@ -43,3 +43,15 @@ export const SET_TOKEN: GraphQLMutation = {
   `,
   variables: ({ username, expoToken }) => ({ input: { username, expoToken } })
 }
+
+// to be moved to /notifications/Notifications.murations.ts
+// export const SEND_NOTIFICATION: GraphQLMutation = {
+//   mutation: gql`
+//   mutation sendNotification($input: [Notification]!) {
+//     sendNotification(input: $input){
+//      message
+//     }
+//   }
+// `,
+// variables: ([Notification]) => ({ input: [Notification] })
+// }
