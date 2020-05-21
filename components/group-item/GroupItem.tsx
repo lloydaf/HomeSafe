@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab, Tabs, Button, Text, ListItem } from 'native-base';
+import {Text, ListItem } from 'native-base';
 import {GroupContext, GroupContextType} from 'stores/groups/Groups.store'
 export const GroupItem = (params) => {
   

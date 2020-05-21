@@ -1,32 +1,32 @@
 import renderer, { ReactTestRenderer, act} from 'react-test-renderer';
-import {Main} from './Main';
+import {Home} from './Home';
 import React from 'react';
-import {GroupContext, GroupContextType} from 'stores/groups/Groups.store';
+import { MockedProvider } from '@apollo/client/testing';
+import {GroupContext, GroupContextType} from 'stores/groups/Groups.store'
 
-// this is to get rid of a warning, see: https://stackoverflow.com/a/59593847/6613113
-jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper');
-
-describe('tests for Main Component', () => {
+describe('tests for Home Component', () => {
   let component: ReactTestRenderer;
   let mockNavigation = {
     navigate: () => {}
   }
+
   let mockGroupContext: GroupContextType = {
     createNewGroup: () => {},
     deleteGroupName: () => {},
     groups: []
   }
+
   beforeEach(() => {
     component = renderer.create(
-      <GroupContext.Provider value= {mockGroupContext}>
-        <Main navigation={mockNavigation} />
-      </GroupContext.Provider>
+      <MockedProvider mocks={[]}>
+        <GroupContext.Provider value={mockGroupContext}>
+          <Home navigation={mockNavigation} />
+        </GroupContext.Provider>
+      </MockedProvider>
     )
-  })
+  });
 
   it('renders without error', () => {
     expect(component).toBeTruthy();
   });
-
-  
 })
