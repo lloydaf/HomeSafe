@@ -7,8 +7,8 @@ export const GroupItem = (params) => {
     <GroupContext.Consumer>
       {({deleteGroupName}: GroupContextType) => (
       <ListItem onLongPress={() => deleteGroupName(params?.item?.name)} style={{padding: 10}}>
-        <Text>
-        {params?.item?.name}
+        <Text style={{color: params?.indexValue % 2 === 0 ? 'blue' : 'lightblue', fontWeight: "bold"}}>
+         {params?.item?.name}
         </Text>
       </ListItem>
       )}

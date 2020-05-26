@@ -1,9 +1,11 @@
 import { TextInput, Button } from 'react-native';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users';
 import { useMutation } from '@apollo/client';
 import { UserContext, UserContextType } from 'stores/users';
 import { getToken } from 'utils/expo/expo.util';
+import { Container, View, Content, Card, CardItem, Body } from 'native-base';
+import React from 'react';
 
 export const Login = ({ navigation }) => {
 
@@ -35,14 +37,22 @@ export const Login = ({ navigation }) => {
     <UserContext.Consumer>
       {
         ({ login }: UserContextType) => (
-          <>
-            <TextInput placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
-            <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
-            <Button title='Login' disabled={!username || !password} onPress={() => loginUser({ login })}></Button>
+          <Container>
+        <Content style={{padding: 10}}>
+          <Card>
+            <CardItem>
+              <Body>
+            <TextInput style={{padding: 10}} placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
+            <TextInput style={{padding: 10}} secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
+          </Body>
+          </CardItem>
+          </Card>
+           <Button title='Login' disabled={!username || !password} onPress={() => loginUser({ login })}></Button>
             <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")}></Button>
-          </>
+          </Content>
+          </Container>
         )
       }
     </UserContext.Consumer>
-  );
+  )
 }

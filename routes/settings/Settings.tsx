@@ -15,7 +15,7 @@ export const Settings = () => {
         ({ logout }: UserContextType) => (
           <List>
             <ListItem onPress={() => signOut(logout)}>
-              <Text>Sign Out</Text>
+              <Text style={{color:'maroon', fontWeight: "bold"}}>Sign Out</Text>
             </ListItem>
           </List>
         )
