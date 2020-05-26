@@ -60,21 +60,21 @@ export const SignUp = ({ navigation }) => {
       {
         ({ login }: UserContextType) => (
           <>
-          <Container>
-           <Content style={{padding: 10}}>
-          <Card>
-            <CardItem>
-              <Body style={{padding: 10}}>
-            <TextInput placeholder={'Username'} defaultValue={username} onChangeText={fetchUser}></TextInput>
-            <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
-            <TextInput placeholder={'Full Name'} defaultValue={fullName} onChangeText={setFullName}></TextInput>
-            <TextInput placeholder={'Phone Number'} defaultValue={phoneNumber} onChangeText={setPhoneNumber}></TextInput>
-            </Body>
-            </CardItem>
-            </Card>
-            <Button title='Submit' disabled={!fullName || !phoneNumber || disabled} onPress={() => registerAndNavigate({ login })}></Button>
-            <Button title='Login' onPress={() => navigation.navigate("Login")}></Button>
-            </Content>
+            <Container>
+              <Content style={{ padding: 10 }}>
+                <Card>
+                  <CardItem>
+                    <Body style={{ padding: 10 }}>
+                      <TextInput placeholder={'Username'} defaultValue={username} onChangeText={fetchUser}></TextInput>
+                      <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
+                      <TextInput placeholder={'Full Name'} defaultValue={fullName} onChangeText={setFullName}></TextInput>
+                      <TextInput placeholder={'Phone Number'} defaultValue={phoneNumber} onChangeText={setPhoneNumber}></TextInput>
+                    </Body>
+                  </CardItem>
+                </Card>
+                <Button title='Submit' disabled={!fullName || !phoneNumber || disabled} onPress={() => registerAndNavigate({ login })}></Button>
+                <Button title='Login' onPress={() => navigation.navigate("Login")}></Button>
+              </Content>
             </Container>
           </>
         )

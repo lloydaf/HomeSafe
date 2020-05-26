@@ -38,18 +38,18 @@ export const Login = ({ navigation }) => {
       {
         ({ login }: UserContextType) => (
           <Container>
-        <Content style={{padding: 10}}>
-          <Card>
-            <CardItem>
-              <Body>
-            <TextInput style={{padding: 10}} placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
-            <TextInput style={{padding: 10}} secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
-          </Body>
-          </CardItem>
-          </Card>
-           <Button title='Login' disabled={!username || !password} onPress={() => loginUser({ login })}></Button>
-            <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")}></Button>
-          </Content>
+            <Content style={{ padding: 10 }}>
+              <Card>
+                <CardItem>
+                  <Body>
+                    <TextInput style={{ padding: 10 }} placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
+                    <TextInput style={{ padding: 10 }} secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
+                  </Body>
+                </CardItem>
+              </Card>
+              <Button title='Login' disabled={!username || !password} onPress={() => loginUser({ login })}></Button>
+              <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")}></Button>
+            </Content>
           </Container>
         )
       }
