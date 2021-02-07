@@ -1,6 +1,6 @@
 import React from 'react';
 import { handleNotification } from 'utils/expo/expo.util';
-import { Notifications } from 'expo';
+import * as Notifications from 'expo-notifications';
 import { AsyncStorage } from 'react-native';
 import { Config } from 'utils/config/config.util';
 import { ApolloClient, HttpLink, InMemoryCache, ApolloProvider, ApolloLink } from '@apollo/client';
@@ -9,7 +9,7 @@ import { Container } from 'native-base';
 import { Home, Login } from 'routes';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { UserContext, UserContextType } from 'stores/users';
 import { EventSubscription } from 'fbemitter';
 import { createStackNavigator } from '@react-navigation/stack';
