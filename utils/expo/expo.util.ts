@@ -41,18 +41,13 @@ export const getExpoToken = async (): Promise<string> => {
       alert('Failed to get push token for push notification!');
       return;
     }
-    token = await Notifications.getExpoPushTokenAsync();
+    token = (await Notifications.getExpoPushTokenAsync()).data;
   } else {
     alert('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {
-    Notifications.createChannelAndroidAsync('default', {
-      name: 'default',
-      sound: true,
-      priority: 'max',
-      vibrate: [0, 250, 250, 250],
-    });
+    Notifications.setNotificationChannelAsync('default', null);
   }
   return token;
 };

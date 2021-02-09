@@ -30,7 +30,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const httpLink = new HttpLink({
-  uri: 'http://192.168.2.6:3000/dev/api'
+  uri: 'http://192.168.1.240:3000/dev/api'
 });
 
 
@@ -81,7 +81,7 @@ export default class App extends React.Component {
     // notification (rather than just tapping the app icon to open it),
     // this function will fire on the next tick after the app starts
     // with the notification data.
-    this._notificationSubscription = Notifications.addListener(handleNotification);
+    this._notificationSubscription = Notifications.addNotificationReceivedListener(handleNotification);
   }
 
 
