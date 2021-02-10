@@ -43,72 +43,70 @@ export default class App extends React.Component {
 
   _notificationSubscription: EventSubscription;
   state = {
-  	loading: true,
-  	loggedIn: false
+    loading: true,
+    loggedIn: false
   }
 
   userContext: UserContextType = {
-  	logout: () => this.setState({ loggedIn: false }),
-  	login: async ({ username }) => {
-  		await AsyncStorage.setItem(Config.UserName, username)
-  		this.setState({ loggedIn: true })
-  	}
+    logout: () => this.setState({ loggedIn: false }),
+    login: async ({ username }) => {
+      await AsyncStorage.setItem(Config.UserName, username)
+      this.setState({ loggedIn: true })
+    }
   };
 
   async componentDidMount() {
 
-  	try {
-  		await Font.loadAsync({
-  			Roboto: require('native-base/Fonts/Roboto.ttf'),
-  			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-  			...Ionicons.font,
-  		})
-  		const userName = await AsyncStorage.getItem(Config.UserName)
-  		console.log('username is', userName)
-  		if (userName) {
-  			this.setState({ loggedIn: true })
-  		}
-  		const loading = false
-  		this.setState({ loading })
-  	} catch (err) {
-  		console.log('error is', err)
-  	} finally {
+    try {
+      await Font.loadAsync({
+        Roboto: require('native-base/Fonts/Roboto.ttf'),
+        Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
+        ...Ionicons.font,
+      })
+      const userName = await AsyncStorage.getItem(Config.UserName)
+      console.log('username is', userName)
+      if (userName) {
+        this.setState({ loggedIn: true })
+      }
+      const loading = false
+      this.setState({ loading })
+    } catch (err) {
+      console.log('error is', err)
+    }
 
-  	}
-
-  	// Handle notifications that are received or selected while the app
-  	// is open. If the app was closed and then opened by tapping the
-  	// notification (rather than just tapping the app icon to open it),
-  	// this function will fire on the next tick after the app starts
-  	// with the notification data.
-  	this._notificationSubscription = Notifications.addNotificationReceivedListener(handleNotification)
+    // Handle notifications that are received or selected while the app
+    // is open. If the app was closed and then opened by tapping the
+    // notification (rather than just tapping the app icon to open it),
+    // this function will fire on the next tick after the app starts
+    // with the notification data.
+    this._notificationSubscription = Notifications.addNotificationReceivedListener(handleNotification)
   }
 
 
   render() {
-  	let view
-  	if (this.state.loading) {
-  		return <AppLoading />
-  	}
-  	return (
-  		<NavigationContainer>
-  			<ApolloProvider client={client}>
-  				<UserContext.Provider value={this.userContext}>
-  					<Container>
-  						{!this.state.loggedIn ? (
-  							<Stack.Navigator initialRouteName="Login">
-  								<Stack.Screen name="Login" component={Login} />
-  								<Stack.Screen name="SignUp" component={SignUp} />
-  							</Stack.Navigator>
-  						) : (
-  							<Stack.Navigator initialRouteName="Home">
-  								<Stack.Screen name={'Home'} component={Home} />
-  							</Stack.Navigator>
-  						)}
-  					</Container>
-  				</UserContext.Provider>
-  			</ApolloProvider>
-  		</NavigationContainer>
-  	)
+    let view
+    if (this.state.loading) {
+      return <AppLoading />
+    }
+    return (
+      <NavigationContainer>
+        <ApolloProvider client={client}>
+          <UserContext.Provider value={this.userContext}>
+            <Container>
+              {!this.state.loggedIn ? (
+                <Stack.Navigator initialRouteName="Login">
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="SignUp" component={SignUp} />
+                </Stack.Navigator>
+              ) : (
+                <Stack.Navigator initialRouteName="Home">
+                  <Stack.Screen name={'Home'} component={Home} />
+                </Stack.Navigator>
+              )}
+            </Container>
+          </UserContext.Provider>
+        </ApolloProvider>
+      </NavigationContainer>
+    )
   }
 }
