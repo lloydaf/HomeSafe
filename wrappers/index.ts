@@ -1,1 +1,1 @@
-export * from './useLazyQueryAsync';
+export * from './useLazyQueryAsync'

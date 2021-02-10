@@ -1,2 +1,2 @@
-export * from './User.type';
-export * from './ReactiveStore.type';
+export * from './User.type'
+export * from './ReactiveStore.type'
