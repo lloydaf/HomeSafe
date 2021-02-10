@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client'
-import { GraphQLQuery } from 'graphql-schema/GraphQLWrapper.type'
+import { GraphQLQuery } from '../../graphql/GraphQLWrapper.type'
 
 export const GET_USER: GraphQLQuery = {
   query: gql`

@@ -1,10 +1,11 @@
 import React from 'react'
 import renderer, { ReactTestRenderer, act } from 'react-test-renderer'
 import { MockedProvider } from '@apollo/client/testing'
+
 import { Login } from './Login'
-import { UserContext, UserContextType } from 'stores/users'
-import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users'
-import * as expoUtils from 'utils/expo/expo.util'
+import { UserContext, UserContextType } from '../../stores/users'
+import { LOGIN_USER, SET_TOKEN } from '../../graphql/users'
+import * as expoUtils from '../../utils/expo/expo.util'
 
 // this is to get rid of a warning, see: https://stackoverflow.com/a/59593847/6613113
 jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper')

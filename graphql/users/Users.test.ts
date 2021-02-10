@@ -1,5 +1,5 @@
 import * as exported from './index'
-import { GraphQLMutation, GraphQLQuery } from 'graphql-schema/GraphQLWrapper.type'
+import { GraphQLMutation, GraphQLQuery } from '../../graphql/GraphQLWrapper.type'
 
 describe('Tests for Users: Queries and Mutations', () => {
   describe('exported queries', () => {

@@ -1,9 +1,10 @@
 import { TextInput, Button } from 'react-native'
 import React, { useState } from 'react'
-import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users'
 import { useMutation } from '@apollo/client'
-import { UserContext, UserContextType } from 'stores/users'
-import { getToken } from 'utils/expo/expo.util'
+
+import { LOGIN_USER, SET_TOKEN } from '../../graphql/users'
+import { UserContext, UserContextType } from '../../stores/users'
+import { getToken } from '../../utils/expo/expo.util'
 
 export const Login = ({ navigation }) => {
 

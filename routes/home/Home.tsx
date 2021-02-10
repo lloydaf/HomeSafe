@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from 'react'
 import { TextInput } from 'react-native'
 import { Tab, Tabs, Button, Text } from 'native-base'
-import React, { useState, useEffect } from 'react'
-import { Settings } from 'routes/settings/Settings'
-import { sendPushNotification } from 'utils/expo/expo.util'
-import { useUsername } from 'stores/users'
-import { User } from 'models'
+
+import { Settings } from '../../routes/settings/Settings'
+import { sendPushNotification } from '../../utils/expo/expo.util'
+import { useUsername } from '../../stores/users'
+import { User } from '../../models'
 
 export const Home = () => {
 

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
-import { useLazyQueryAsync } from 'wrappers'
-import { GET_USER } from 'graphql-schema/users'
 import { Subject } from 'rxjs'
 import { debounceTime, filter } from 'rxjs/operators'
-import { User } from 'models'
-import { ReactiveStore } from 'models'
+
+import { GET_USER } from '../../graphql/users'
+import { User, ReactiveStore } from '../../models'
+import { useLazyQueryAsync } from '../../wrappers'
 
 export const UserContext = React.createContext({})
 
@@ -17,7 +17,7 @@ export interface UserContextType {
 export const useUsername = (): ReactiveStore<User, string> => {
   const username$: Subject<string> = new Subject()
   const user$: Subject<User> = new Subject()
-  
+
   const getUser = useLazyQueryAsync(GET_USER.query)
 
   const subscription = username$.pipe(
