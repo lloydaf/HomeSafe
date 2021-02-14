@@ -1,40 +1,49 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { TextInput } from 'react-native'
 import { Tab, Tabs, Button, Text } from 'native-base'
 
 import { Settings } from '../../routes/settings/Settings'
 import { sendPushNotification } from '../../utils/expo/expo.util'
-import { useUsername } from '../../stores/users'
 import { User } from '../../models'
+import { Subject } from 'rxjs'
+import { useRxState } from '../../utils/hooks/useRxState'
+import { useFetchUser } from '../../stores/users/Users.service'
 
 export const Home = () => {
+
+  const username$ = useMemo(() => new Subject<string>(), [])
+
+  const username = useRxState(username$)
 
   const [message, setMessage] = useState('')
   const [expoToken, setExpoToken] = useState('')
   const [disabled, setDisabled] = useState(true)
-  const {
-    subscribeTo$: user$,
-    emitFrom$: username$
-  } = useUsername()
+
 
   const fetchUser = (username: string) => {
+    console.log('username', username)
     username$.next(username)
   }
 
-  const subscription = user$.subscribe((user: User) => {
-    if (user && user.expoToken) {
-      setExpoToken(user.expoToken)
-      setDisabled(false)
-    }
-    else {
-      setDisabled(true)
-    }
-  })
+
+  const user$ = useFetchUser(username$)
+
   useEffect(() => {
+
+    const subscription = user$.subscribe(({ data: { user } }: { data: { user: User } }) => {
+      if (user && user.expoToken) {
+        setExpoToken(user.expoToken)
+        setDisabled(false)
+      }
+      else {
+        setDisabled(true)
+      }
+    })
     return () => {
+      username$.complete()
       subscription && subscription.unsubscribe()
     }
-  })
+  }, [username$])
 
 
   const sendMessage = async ({ expoToken, body }) => {

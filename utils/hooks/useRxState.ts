@@ -1,10 +1,11 @@
-import { BehaviorSubject, Subject, Observable } from 'rxjs'
+import { Observable } from 'rxjs'
+import { useState } from 'react'
 
-type RxState<T> = [Observable<T>, (val: T) => void]
-
-export const useRxState = <T>(initialState?: T): RxState<T> => {
-  const state = initialState ? new BehaviorSubject(initialState) : new Subject<T>()
-  const setState = (val: T) => state.next(val)
-  return [state, setState]
+// make sure to complete your observable after use
+export const useRxState = <T>(observable: Observable<T>): T => {
+  const [state, setState] = useState<T>()
+  observable
+    .subscribe(val => setState(val))
+  return state
 }
 

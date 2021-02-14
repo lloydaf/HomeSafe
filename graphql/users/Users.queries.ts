@@ -9,5 +9,8 @@ export const GET_USER: GraphQLQuery = {
         expoToken
       }
     }`,
-  variables: (username: string) => ({ username })
+  variables: (username: string) => {
+    console.log('variables', username)
+    return ({ username })
+  }
 }
