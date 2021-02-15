@@ -1,25 +1,19 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput, Button, AsyncStorage } from 'react-native'
 import { useMutation } from '@apollo/client'
 
 import { getToken } from '../../utils/expo/expo.util'
 import { useRxState } from '../../utils/hooks/useRxState'
-import { useLazyQuery$ } from '../../wrappers'
-import { User } from '../../models'
 import { UserContext, UserContextType } from '../../stores/users'
-import { GET_USER, REGISTER_USER, SET_TOKEN } from '../../graphql/users'
+import { REGISTER_USER, SET_TOKEN } from '../../graphql/users'
 
-import { BehaviorSubject, from, Subject, Subscription } from 'rxjs'
 import { useFetchUser } from '../../stores/users/Users.service'
 
 
 export const SignUp = ({ navigation }) => {
 
-  const username$ = useMemo(() => new Subject<string>(), [])
 
-  const username = useRxState(username$)
-
-
+  const [username, username$, setUsername$] = useRxState<string>()
 
   const [disabled, setDisabled] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -69,7 +63,7 @@ export const SignUp = ({ navigation }) => {
       {
         ({ login }: UserContextType) => (
           <>
-            <TextInput placeholder={'Username'} value={username} onChangeText={(val) => username$.next(val)}></TextInput>
+            <TextInput placeholder={'Username'} value={username} onChangeText={setUsername$}></TextInput>
             <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
             <TextInput placeholder={'Full Name'} defaultValue={fullName} onChangeText={setFullName}></TextInput>
             <TextInput placeholder={'Phone Number'} defaultValue={phoneNumber} onChangeText={setPhoneNumber}></TextInput>

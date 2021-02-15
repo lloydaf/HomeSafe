@@ -1,30 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextInput } from 'react-native'
 import { Tab, Tabs, Button, Text } from 'native-base'
 
 import { Settings } from '../../routes/settings/Settings'
 import { sendPushNotification } from '../../utils/expo/expo.util'
 import { User } from '../../models'
-import { Subject } from 'rxjs'
 import { useRxState } from '../../utils/hooks/useRxState'
 import { useFetchUser } from '../../stores/users/Users.service'
 
 export const Home = () => {
 
-  const username$ = useMemo(() => new Subject<string>(), [])
 
-  const username = useRxState(username$)
+  const [username, username$, setUsername$] = useRxState<string>()
 
   const [message, setMessage] = useState('')
   const [expoToken, setExpoToken] = useState('')
   const [disabled, setDisabled] = useState(true)
-
-
-  const fetchUser = (username: string) => {
-    console.log('username', username)
-    username$.next(username)
-  }
-
 
   const user$ = useFetchUser(username$)
 
@@ -58,7 +49,7 @@ export const Home = () => {
   return (
     <Tabs>
       <Tab heading="Home">
-        <TextInput placeholder="username" onChangeText={fetchUser}></TextInput>
+        <TextInput placeholder="username" onChangeText={setUsername$}></TextInput>
         <TextInput placeholder="message" defaultValue={message} onChangeText={setMessage}></TextInput>
         <Button disabled={disabled || !message} onPress={() => sendMessage({ expoToken, body: message })}>
           <Text>Send Me!</Text>
