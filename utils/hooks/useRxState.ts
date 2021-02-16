@@ -2,7 +2,7 @@ import { BehaviorSubject, Subject } from 'rxjs'
 import { useMemo, useState } from 'react'
 
 // make sure to complete your observable after use
-export const useRxState = <T>(initialState?: T): [T, Subject<T>, (val: T) => void] => {
+export const useRxState = <T>(initialState?: T): [T, (val: T) => void, Subject<T>] => {
   const [state, setState] = useState<T>(initialState)
   const subject: Subject<T> = state ? new BehaviorSubject(state) : new Subject()
   return useMemo(() => {
@@ -10,7 +10,7 @@ export const useRxState = <T>(initialState?: T): [T, Subject<T>, (val: T) => voi
       setState(val)
       subject.next(val)
     }
-    return [state, subject, setSubject]
+    return [state, setSubject, subject]
   }, [subject])
 }
 

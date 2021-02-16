@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs'
-import { debounceTime, filter, mergeMap, switchMap, tap } from 'rxjs/operators'
+import { debounceTime, filter, mergeMap } from 'rxjs/operators'
 import { useLazyQuery$ } from '../../wrappers'
-import { GET_USER, REGISTER_USER, SET_TOKEN } from '../../graphql/users'
+import { GET_USER } from '../../graphql/users'
 
 export const useFetchUser = (username$: Subject<string>) => {
   const getUser = useLazyQuery$(GET_USER.query)

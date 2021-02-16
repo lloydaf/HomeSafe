@@ -11,7 +11,7 @@ import { useFetchUser } from '../../stores/users/Users.service'
 export const Home = () => {
 
 
-  const [username, username$, setUsername$] = useRxState<string>()
+  const [username, setUsername$, username$] = useRxState<string>()
 
   const [message, setMessage] = useState('')
   const [expoToken, setExpoToken] = useState('')

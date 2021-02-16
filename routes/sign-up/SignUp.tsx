@@ -13,7 +13,7 @@ import { useFetchUser } from '../../stores/users/Users.service'
 export const SignUp = ({ navigation }) => {
 
 
-  const [username, username$, setUsername$] = useRxState<string>()
+  const [username, setUsername$, username$] = useRxState<string>()
 
   const [disabled, setDisabled] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState('')
