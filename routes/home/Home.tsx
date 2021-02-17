@@ -8,10 +8,10 @@ import { User } from '../../models'
 import { useRxState } from '../../utils/hooks/useRxState'
 import { useFetchUser } from '../../stores/users/Users.service'
 
-export const Home = () => {
+export const Home = (): JSX.Element => {
 
 
-  const [username, setUsername$, username$] = useRxState<string>()
+  const [, setUsername$, username$] = useRxState<string>()
 
   const [message, setMessage] = useState('')
   const [expoToken, setExpoToken] = useState('')
