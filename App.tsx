@@ -84,7 +84,6 @@ export default class App extends React.Component {
 
 
   render() {
-    let view
     if (this.state.loading) {
       return <AppLoading />
     }
