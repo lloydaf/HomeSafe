@@ -1,25 +1,22 @@
-import React from 'react';
-import { List, ListItem, Text } from 'native-base';
-import { AsyncStorage } from 'react-native';
-import { Config } from 'utils/config/config.util';
-import { UserContext, UserContextType } from 'stores/users';
+import React, { useContext, useMemo } from 'react'
+import { List, ListItem, Text } from 'native-base'
+import { AsyncStorage } from 'react-native'
 
-const signOut = async (callback: Function) => {
-  await AsyncStorage.removeItem(Config.UserName);
-  callback();
-}
-export const Settings = () => {
+import { Config } from '../../utils/config/config.util'
+import { UserContext } from '../../stores/users'
+
+
+export const Settings = (): JSX.Element => {
+  const { logout } = useContext(UserContext)
+  const signOut = useMemo(() => async () => {
+    await AsyncStorage.removeItem(Config.UserName)
+    logout()
+  }, [logout])
   return (
-    <UserContext.Consumer>
-      {
-        ({ logout }: UserContextType) => (
-          <List>
-            <ListItem onPress={() => signOut(logout)}>
-              <Text>Sign Out</Text>
-            </ListItem>
-          </List>
-        )
-      }
-    </UserContext.Consumer>
+    <List>
+      <ListItem onPress={() => signOut()}>
+        <Text>Sign Out</Text>
+      </ListItem>
+    </List>
   )
 }

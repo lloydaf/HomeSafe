@@ -1,12 +1,12 @@
-import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-import { Platform, Vibration, AsyncStorage } from 'react-native';
-import { Config } from '../config/config.util';
+import * as Notifications from 'expo-notifications'
+import * as Permissions from 'expo-permissions'
+import Constants from 'expo-constants'
+import { Platform, Vibration, AsyncStorage } from 'react-native'
+import { Config } from '../config/config.util'
 
 export const handleNotification = (_: any) => {
-  Vibration.vibrate(0);
-};
+  Vibration.vibrate(0)
+}
 
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
 export const sendPushNotification = async ({ expoToken, title, body }: { expoToken: string, title: string, body: string }) => {
@@ -16,7 +16,7 @@ export const sendPushNotification = async ({ expoToken, title, body }: { expoTok
     title, body,
     data: { data: 'goes here' },
     _displayInForeground: true,
-  };
+  }
   const response = await fetch('https://exp.host/--/api/v2/push/send', {
     method: 'POST',
     headers: {
@@ -25,43 +25,43 @@ export const sendPushNotification = async ({ expoToken, title, body }: { expoTok
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(message),
-  });
-};
+  })
+}
 
 export const getExpoToken = async (): Promise<string> => {
-  let token: string;
+  let token: string
   if (Constants.isDevice) {
-    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-    let finalStatus = existingStatus;
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS)
+    let finalStatus = existingStatus
     if (existingStatus !== 'granted') {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-      finalStatus = status;
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+      finalStatus = status
     }
     if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
+      alert('Failed to get push token for push notification!')
+      return
     }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
+    token = (await Notifications.getExpoPushTokenAsync()).data
   } else {
-    alert('Must use physical device for Push Notifications');
+    alert('Must use physical device for Push Notifications')
   }
 
   if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', null);
+    Notifications.setNotificationChannelAsync('default', null)
   }
-  return token;
-};
+  return token
+}
 
 export const getToken = async () => {
   try {
-    const expoToken = await AsyncStorage.getItem(Config.ExpoToken);
-    if (!expoToken) throw new Error(`${Config.ExpoToken} not set, fetching!`);
-    console.log(`${Config.ExpoToken} set, ${expoToken}`);
-    return expoToken;
+    const expoToken = await AsyncStorage.getItem(Config.ExpoToken)
+    if (!expoToken) throw new Error(`${Config.ExpoToken} not set, fetching!`)
+    console.log(`${Config.ExpoToken} set, ${expoToken}`)
+    return expoToken
   } catch (err) {
-    const token = await getExpoToken();
-    console.log(`${Config.ExpoToken} fetched, ${token}`);
-    await AsyncStorage.setItem(Config.ExpoToken, token);
-    return token;
+    const token = await getExpoToken()
+    console.log(`${Config.ExpoToken} fetched, ${token}`)
+    await AsyncStorage.setItem(Config.ExpoToken, token)
+    return token
   }
 }

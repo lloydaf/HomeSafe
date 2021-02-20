@@ -1,47 +1,51 @@
-import { TextInput, Button } from 'react-native';
-import React, { useState } from 'react';
-import { LOGIN_USER, SET_TOKEN } from 'graphql-schema/users';
-import { useMutation } from '@apollo/client';
-import { UserContext, UserContextType } from 'stores/users';
-import { getToken } from 'utils/expo/expo.util';
+import { TextInput, Button } from 'react-native'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
+import { filter, mergeMap, switchMap, tap, withLatestFrom } from 'rxjs/operators'
+import { from, Subject } from 'rxjs'
+import { useNavigation } from '@react-navigation/native'
 
-export const Login = ({ navigation }) => {
+import { LOGIN_USER, SET_TOKEN } from '../../graphql/users'
+import { UserContext } from '../../stores/users'
+import { getToken } from '../../utils/expo/expo.util'
+import { useMutation$ } from '../../wrappers'
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+export const Login = (): JSX.Element => {
 
-  const [tryLogin] = useMutation(LOGIN_USER.mutation);
-  const [action] = useMutation(SET_TOKEN.mutation);
+  const navigation = useNavigation()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
+  const { login: postLogin } = useContext(UserContext)
 
-  const loginUser = async ({ login }: UserContextType) => {
-    try {
-      const { data: loginData } = await tryLogin({
-        variables: LOGIN_USER.variables({ username, password })
-      });
-      if (!loginData.login) throw new Error('Invalid username/password combination');
-      const expoToken = await getToken();
-      const { data: tokenData } = await action({
-        variables: SET_TOKEN.variables({ username, expoToken })
-      });
-      login({ username });
-    } catch (error) {
-      console.log('error logging user in', error);
+  const login$ = useMemo(() => new Subject<{ username: string, password: string }>(), [])
+
+  const tryLogin$ = useMutation$(LOGIN_USER.mutation)
+  const setToken$ = useMutation$(SET_TOKEN.mutation)
+
+  useEffect(() => {
+    const subscription$ = login$.pipe(
+      mergeMap(({ username, password }) => tryLogin$(LOGIN_USER.variables({ username, password }))),
+      tap(({ data }) => !data.login && console.error('Username and password do not match!')),
+      filter(({ data }) => !!data.login),
+      switchMap(() => from(getToken())),
+      withLatestFrom(login$),
+      switchMap(([expoToken, { username }]) => setToken$(SET_TOKEN.variables({ username, expoToken }))),
+    ).subscribe(result => {
+      result && postLogin({ username: username })
+    }, err => {
+      console.error('error while logging in', err)
+    })
+    return () => {
+      subscription$.unsubscribe()
     }
-  }
+  }, [login$])
 
   return (
-    <UserContext.Consumer>
-      {
-        ({ login }: UserContextType) => (
-          <>
-            <TextInput placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
-            <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
-            <Button title='Login' disabled={!username || !password} onPress={() => loginUser({ login })}></Button>
-            <Button title="Sign Up" onPress={() => navigation.navigate("SignUp")}></Button>
-          </>
-        )
-      }
-    </UserContext.Consumer>
-  );
+    <>
+      <TextInput placeholder={'Username'} defaultValue={username} onChangeText={setUsername}></TextInput>
+      <TextInput secureTextEntry placeholder={'Password'} defaultValue={password} onChangeText={setPassword}></TextInput>
+      <Button title='Login' disabled={!username || !password} onPress={() => login$.next({ username, password })}></Button>
+      <Button title="Sign Up" onPress={() => navigation.navigate('SignUp')}></Button>
+    </>
+  )
 }

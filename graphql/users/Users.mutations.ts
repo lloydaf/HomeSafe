@@ -1,6 +1,7 @@
-import { gql } from '@apollo/client';
-import { User } from 'models';
-import { GraphQLMutation } from 'graphql-schema/GraphQLWrapper.type';
+import { gql } from '@apollo/client'
+
+import { User } from '../../models'
+import { GraphQLMutation } from '../../graphql/GraphQLWrapper.type'
 
 type UserRegistration = {
   username: string;

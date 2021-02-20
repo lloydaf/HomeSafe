@@ -1,4 +1,4 @@
-import { DocumentNode } from "graphql";
+import { DocumentNode } from 'graphql'
 
 export type GraphQLMutation = {
   mutation: DocumentNode;
