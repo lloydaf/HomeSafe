@@ -8,7 +8,7 @@ import { getToken } from '../../utils/expo/expo.util'
 import { useRxState } from '../../utils/hooks/useRxState'
 import { REGISTER_USER, SET_TOKEN } from '../../graphql/users'
 
-import { useFetchUser } from '../../stores/users/Users.service'
+import { useFetchUser } from '../../stores/modules/users/Users.service'
 import { useMutation$ } from '../../wrappers'
 
 

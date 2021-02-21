@@ -3,10 +3,12 @@ import { TextInput } from 'react-native'
 import { Tab, Tabs, Button, Text } from 'native-base'
 
 import { Settings } from '../../routes/settings/Settings'
+import { Groups } from '../../routes/groups/Groups'
+
 import { sendPushNotification } from '../../utils/expo/expo.util'
 import { User } from '../../models'
 import { useRxState } from '../../utils/hooks/useRxState'
-import { useFetchUser } from '../../stores/users/Users.service'
+import { useFetchUser } from '../../stores/modules/users/Users.service'
 
 export const Home = (): JSX.Element => {
 
@@ -57,6 +59,9 @@ export const Home = (): JSX.Element => {
       </Tab>
       <Tab heading="Settings">
         <Settings />
+      </Tab>
+      <Tab heading="Groups">
+        <Groups />
       </Tab>
     </Tabs>
   )

@@ -5,7 +5,7 @@ import { from, Subject } from 'rxjs'
 import { useNavigation } from '@react-navigation/native'
 
 import { LOGIN_USER, SET_TOKEN } from '../../graphql/users'
-import { UserContext } from '../../stores/users'
+import { UserContext } from '../../stores/modules/users'
 import { getToken } from '../../utils/expo/expo.util'
 import { useMutation$ } from '../../wrappers'
 

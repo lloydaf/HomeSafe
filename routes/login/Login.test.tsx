@@ -3,7 +3,7 @@ import renderer, { ReactTestRenderer, act } from 'react-test-renderer'
 import { MockedProvider } from '@apollo/client/testing'
 
 import { Login } from './Login'
-import { UserContext, UserContextType } from '../../stores/users'
+import { UserContext, UserContextType } from '../../stores/modules/users'
 import { LOGIN_USER, SET_TOKEN } from '../../graphql/users'
 import * as expoUtils from '../../utils/expo/expo.util'
 

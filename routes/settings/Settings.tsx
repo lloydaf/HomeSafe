@@ -3,7 +3,7 @@ import { List, ListItem, Text } from 'native-base'
 import { AsyncStorage } from 'react-native'
 
 import { Config } from '../../utils/config/config.util'
-import { UserContext } from '../../stores/users'
+import { UserContext } from '../../stores/modules/users'
 
 
 export const Settings = (): JSX.Element => {

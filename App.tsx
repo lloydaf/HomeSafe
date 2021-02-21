@@ -10,12 +10,16 @@ import { Home, Login } from './routes'
 import * as Font from 'expo-font'
 import { Ionicons } from '@expo/vector-icons'
 import AppLoading from 'expo-app-loading'
-import { UserContext, UserContextType } from './stores/users'
+import { UserContext, UserContextType } from './stores/modules/users'
 import { EventSubscription } from 'fbemitter'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { SignUp } from './routes/sign-up/SignUp'
 
+import { configureStore } from './stores/configureStore'
+import { Provider as StoreProvider } from 'react-redux'
+
+const store = configureStore()
 
 const Stack = createStackNavigator()
 
@@ -89,22 +93,24 @@ export default class App extends React.Component {
     }
     return (
       <NavigationContainer>
-        <ApolloProvider client={client}>
-          <UserContext.Provider value={this.userContext}>
-            <Container>
-              {!this.state.loggedIn ? (
-                <Stack.Navigator initialRouteName="Login">
-                  <Stack.Screen name="Login" component={Login} />
-                  <Stack.Screen name="SignUp" component={SignUp} />
-                </Stack.Navigator>
-              ) : (
-                <Stack.Navigator initialRouteName="Home">
-                  <Stack.Screen name={'Home'} component={Home} />
-                </Stack.Navigator>
-              )}
-            </Container>
-          </UserContext.Provider>
-        </ApolloProvider>
+        <StoreProvider store={store}>
+          <ApolloProvider client={client}>
+            <UserContext.Provider value={this.userContext}>
+              <Container>
+                {!this.state.loggedIn ? (
+                  <Stack.Navigator initialRouteName="Login">
+                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="SignUp" component={SignUp} />
+                  </Stack.Navigator>
+                ) : (
+                  <Stack.Navigator initialRouteName="Home">
+                    <Stack.Screen name={'Home'} component={Home} />
+                  </Stack.Navigator>
+                )}
+              </Container>
+            </UserContext.Provider>
+          </ApolloProvider>
+        </StoreProvider>
       </NavigationContainer>
     )
   }
